@@ -70,7 +70,11 @@ class RoundRobin(Generic[T]):
 		if self.is_empty:
 			raise ValueError("RoundRobin has no items.")
 
-		removed_index = self._items.index(item)
+		try:
+			removed_index = self._items.index(item)
+		except ValueError:
+			raise ValueError(f"Item '{item}' not found in RoundRobin.")
+
 		self._items.pop(removed_index)
 
 		if self.is_empty:
