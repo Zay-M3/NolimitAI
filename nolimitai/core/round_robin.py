@@ -12,7 +12,6 @@ from typing import Generic, Iterable, Iterator, List, TypeVar
 
 T = TypeVar("T")
 
-
 @dataclass
 class RoundRobin(Generic[T]):
 	"""Simple round robin iterator over a mutable list of items.
