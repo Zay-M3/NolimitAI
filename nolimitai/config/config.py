@@ -2,6 +2,7 @@
 from typing import Dict, List
 from dataclasses import dataclass, field
 from typing import Optional
+from nolimitai.adapters import ADAPTERS_FACTORIES
 
 
 
@@ -32,8 +33,8 @@ class Config:
         Creates a Config instance from individual parameters.
         """
         
-        supported_services = set(cls()._SUPPORTED_SERVICES)
-        
+        supported_services = set(ADAPTERS_FACTORIES.keys())
+                
         keys = keys or {}
         
         valid_keys = {

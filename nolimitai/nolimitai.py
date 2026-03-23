@@ -20,7 +20,7 @@ class NolimitAI:
         self.config = None
         self.router = None
         
-    def set_config(self, temperature: Optional[float] = None, max_tokens: Optional[int] = None, top_p: Optional[float] = None, keys: Dict[str, str] = None) -> None:
+    def set_config(self, temperature: Optional[float] = None, max_tokens: Optional[int] = None, top_p: Optional[float] = None, keys: Optional[Dict[str, str]] = None) -> None:
         """Set the configuration for NolimitAI. This allows you to update the configuration after initialization."""
         
         config = Config.set_config(
