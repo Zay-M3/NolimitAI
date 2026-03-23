@@ -21,8 +21,8 @@ class Config:
     
     # Internal mapping of supported services
     _SUPPORTED_SERVICES: List[str] = field(default_factory=lambda: [
-        'groq', 'openrouter', 'together_ai', 'google_generative_ai', 
-        'mistral_ai', 'cohere', 'huggingface', 'deepinfra'
+        'groq', 'openrouter', 'together_ai', 'gemini_ai', 
+        'mistral_ai'
     ])
     
     # The actual keys provided by the user

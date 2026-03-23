@@ -3,7 +3,7 @@ from openai import AsyncOpenAI as OpenAI
 from typing import AsyncIterator, Optional
 
 
-class OpenRouterAdapter(BaseAdapter):
+class GeminiAIAdapter(BaseAdapter):
     
     def __init__(
         self,
@@ -19,7 +19,7 @@ class OpenRouterAdapter(BaseAdapter):
         self.default_max_tokens = default_max_tokens
         self.default_top_p = default_top_p
         self.client = OpenAI(
-            base_url="https://openrouter.ai/api/v1",
+            base_url="https://generativelanguage.googleapis.com/v1beta/openai/",
             api_key=self.api_key)
         
     async def chat(
@@ -30,7 +30,7 @@ class OpenRouterAdapter(BaseAdapter):
         max_tokens: Optional[int] = None,
         top_p: Optional[float] = None,
     ) -> AsyncIterator[str]:
-        """Streams the response from the OpenRouter API."""
+        """Streams the response from the Gemini API."""
         effective_model = self.default_model if model is None else model
         effective_temperature = self.default_temperature if temperature is None else temperature
         effective_max_tokens = self.default_max_tokens if max_tokens is None else max_tokens
@@ -52,4 +52,4 @@ class OpenRouterAdapter(BaseAdapter):
 
     @property
     def provider_name(self) -> str:
-        return "openrouter"
+        return "gemini_ai"
