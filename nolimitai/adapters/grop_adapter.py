@@ -22,8 +22,8 @@ class GropAdapter(BaseAdapter):
 
     async def chat(
         self,
-        model: str,
-        messages: list,
+        model: Optional[str] = None,
+        messages: list = [],
         temperature: Optional[float] = None,
         max_tokens: Optional[int] = None,
         top_p: Optional[float] = None,

@@ -24,8 +24,8 @@ class MistralAIAdapter(BaseAdapter):
         
     async def chat(
         self,
-        model: str,
-        messages: list,
+        model: Optional[str] = None,
+        messages: list = [],
         temperature: Optional[float] = None,
         max_tokens: Optional[int] = None,
         top_p: Optional[float] = None,
@@ -42,7 +42,7 @@ class MistralAIAdapter(BaseAdapter):
             temperature=effective_temperature,
             max_tokens=effective_max_tokens,
             top_p=effective_top_p,
-            reasoning_effort="medium",
+            reasoning_effort="high",
             stream=True,
             stop=None,
         )
