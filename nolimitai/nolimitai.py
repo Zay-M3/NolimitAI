@@ -33,6 +33,10 @@ class NolimitAI:
         self.router = Router(config=self.config)
         
     async def chat(self, prompt: str, model: str, context: Optional[dict] = None, session_id: str = "default", user_id: Optional[str] = None) -> AsyncIterator[str]:
+        
+        if not self.router:
+            raise RuntimeError("NoLimitIA no ha sido configurado. Llama a set_config() primero.")
+        
         async for chunk in self.router.route(
             prompt=prompt,
             model=model,

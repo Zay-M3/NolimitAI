@@ -10,7 +10,7 @@ class Router:
         self.config = config
         self.cache = CacheMemory()
         self.session_ttl_seconds = 3600
-        self.services = self.config.get_avalited_service()
+        self.services = self.config.get_available_services()
         self.round_robin = RoundRobin(self.services)
         self.agent_index = 0
 
@@ -46,9 +46,11 @@ class Router:
         max_attempts = len(self.services)
         
         cache_key = self._messages_cache_key(session_id=session_id, user_id=user_id)
-        messages = self.get_session_messages(session_id=session_id, user_id=user_id)
+        messages = list(self.get_session_messages(session_id=session_id, user_id=user_id))
+                
+        full_content = f"Context: {context}\n\nUser Question: {prompt}"
+        message = {"role": "user", "content": full_content}
         
-        message = {"role": "user", "content": prompt}
         if context:
             message["context"] = context
 
@@ -75,13 +77,19 @@ class Router:
             )
             try:
                 full_response = ""
+                started_streaming = False
+                
                 async for chunk in adapter.chat(model=model, messages=messages):
+                    started_streaming = True
                     full_response += chunk
                     yield chunk  
                 messages.append({"role": "assistant", "content": full_response})
                 self.cache.set(cache_key, messages, ttl_seconds=self.session_ttl_seconds)
                 return
             except Exception as e:
+                if started_streaming:
+                    raise e
+                
                 if is_retryable(e) or is_auth_error(e):
                     attempts += 1
                     continue

@@ -1,5 +1,5 @@
 from nolimitai.adapters.base import BaseAdapter
-from openai import OpenAI
+from openai import AsyncOpenAI as OpenAI
 from typing import AsyncIterator, Optional
 
 
@@ -33,7 +33,7 @@ class OpenRouterAdapter(BaseAdapter):
         effective_max_tokens = self.default_max_tokens if max_tokens is None else max_tokens
         effective_top_p = self.default_top_p if top_p is None else top_p
 
-        response = self.client.chat.completions.create(
+        response = await self.client.chat.completions.create(
             model=model, 
             messages=messages,
             temperature=effective_temperature,

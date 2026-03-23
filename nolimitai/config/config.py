@@ -27,12 +27,15 @@ class Config:
     _vault: Dict[str, str] = field(default_factory=dict)
     
     @classmethod
-    def set_config(cls, temperature: Optional[float] = None, max_tokens: Optional[int] = None, top_p: Optional[float] = None, keys: Dict[str, str] = None) -> "Config":
+    def set_config(cls, temperature: Optional[float] = None, max_tokens: Optional[int] = None, top_p: Optional[float] = None, keys: Optional[Dict[str, str]] = None) -> "Config":
         """
         Creates a Config instance from individual parameters.
         """
         
         supported_services = set(cls()._SUPPORTED_SERVICES)
+        
+        keys = keys or {}
+        
         valid_keys = {
             service: key
             for service, key in keys.items()
@@ -46,7 +49,7 @@ class Config:
             _vault=valid_keys
         )
 
-    def get_avalited_service(self) -> List[str]:
+    def get_available_services(self) -> List[str]:
         """Returns a list of services that have valid API keys configured."""
         return list(self._vault.keys())
     

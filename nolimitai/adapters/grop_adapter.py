@@ -1,5 +1,5 @@
 from nolimitai.adapters.base import BaseAdapter
-from groq import Groq
+from groq import AsyncGroq as Groq
 from typing import AsyncIterator, Optional
 
 
@@ -20,18 +20,18 @@ class GropAdapter(BaseAdapter):
 
     async def chat(
         self,
+        model: str,
         messages: list,
         temperature: Optional[float] = None,
         max_tokens: Optional[int] = None,
         top_p: Optional[float] = None,
-        model: str = "groq/groq-2b",  
     ) -> AsyncIterator[str]:
         """Streams the response from the Groq API."""
         effective_temperature = self.default_temperature if temperature is None else temperature
         effective_max_tokens = self.default_max_tokens if max_tokens is None else max_tokens
         effective_top_p = self.default_top_p if top_p is None else top_p
 
-        response = self.client.chat.completions.create(
+        response = await self.client.chat.completions.create(
             model=model, 
             messages=messages,
             temperature=effective_temperature,
@@ -42,7 +42,7 @@ class GropAdapter(BaseAdapter):
             stop=None,
         )
         
-        for chunk in response:
+        async for chunk in response:
             yield (chunk.choices[0].delta.content or "")
 
     @property
