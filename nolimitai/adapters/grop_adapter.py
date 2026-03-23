@@ -42,7 +42,6 @@ class GropAdapter(BaseAdapter):
             top_p=effective_top_p,
             reasoning_effort="medium",
             stream=True,
-            stop=None,
         )
         
         async for chunk in response:

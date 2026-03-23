@@ -31,8 +31,26 @@ class NolimitAI:
         )
         self.config = config
         self.router = Router(config=self.config)
+
+    def get_last_used_service(self) -> Optional[str]:
+        """Returns the provider used in the latest successful response."""
+        if not self.router:
+            return None
+        return self.router.get_last_used_service()
+
+    def get_last_route_trace(self) -> list[str]:
+        """Returns providers attempted in the latest chat cycle."""
+        if not self.router:
+            return []
+        return self.router.get_last_route_trace()
+
+    def get_next_service(self) -> Optional[str]:
+        """Returns the next provider that would be selected."""
+        if not self.router:
+            return None
+        return self.router.get_next_service()
         
-    async def chat(self, prompt: str, model: str, context: Optional[dict] = None, session_id: str = "default", user_id: Optional[str] = None) -> AsyncIterator[str]:
+    async def chat(self, prompt: str, model: Optional[str] = None, context: Optional[dict] = None, session_id: str = "default", user_id: Optional[str] = None) -> AsyncIterator[str]:
         
         if not self.router:
             raise RuntimeError("NoLimitIA no ha sido configurado. Llama a set_config() primero.")
