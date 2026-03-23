@@ -3,6 +3,7 @@ from typing import Dict, List
 from dataclasses import dataclass, field
 from typing import Optional
 from nolimitai.adapters import ADAPTERS_FACTORIES
+from types import MappingProxyType
 
 
 
@@ -47,7 +48,7 @@ class Config:
             temperature=temperature,
             max_tokens=max_tokens,
             top_p=top_p,
-            _vault=valid_keys
+            _vault=MappingProxyType(valid_keys) 
         )
 
     def get_available_services(self) -> List[str]:
