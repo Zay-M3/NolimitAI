@@ -5,4 +5,19 @@ __pycache__/
 *.pyc
 *.pyo
 
+.agents/
+.agents
+
 test.py
+
+node_modules
+
+SKILL.md
+skills-lock.json
+
+dist
+
+AGENT.md
+
+nolimit_ai.egg-info/
+nolimit_ai.egg-info*
