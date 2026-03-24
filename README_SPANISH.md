@@ -5,10 +5,10 @@
 </p>
 
 <p align="center">
-  <a href="https://pypi.org/project/nolimitai/"><img src="https://img.shields.io/pypi/v/nolimitai?color=blue" alt="PyPI version"></a>
-  <a href="https://pypi.org/project/nolimitai/"><img src="https://img.shields.io/pypi/pyversions/nolimitai" alt="Python versions"></a>
-  <a href="https://pypi.org/project/nolimitai/"><img src="https://img.shields.io/pypi/dm/nolimitai" alt="Downloads"></a>
-  <a href="https://github.com/Zay-M3/nolimitai/blob/main/LICENSE"><img src="https://img.shields.io/pypi/l/nolimitai" alt="License"></a>
+  <a href="https://pypi.org/project/nolimit-ai/"><img src="https://img.shields.io/pypi/v/nolimit-ai?color=blue" alt="PyPI version"></a>
+  <a href="https://pypi.org/project/nolimit-ai/"><img src="https://img.shields.io/pypi/pyversions/nolimit-ai" alt="Python versions"></a>
+  <a href="https://pypi.org/project/nolimit-ai/"><img src="https://img.shields.io/pypi/dm/nolimit-ai" alt="Downloads"></a>
+  <a href="https://github.com/Zay-M3/nolimit-ai/blob/main/LICENSE"><img src="https://img.shields.io/pypi/l/nolimit-ai" alt="License"></a>
 </p>
 
 NoLimitAI es una librería de Python diseñada para enrutar solicitudes de LLM a través de múltiples proveedores (Groq, OpenRouter, Together AI, Gemini, Mistral) con balanceo de carga "round-robin" integrado y conmutación por error automática. Simplifica la gestión de múltiples servicios de IA a través de una única API asíncrona unificada.
@@ -25,7 +25,7 @@ NoLimitAI es una librería de Python diseñada para enrutar solicitudes de LLM a
 Instala el paquete desde PyPI:
 
 ```bash
-pip install nolimitai
+pip install nolimit-ai
 ```
 
 Puedes ver el proyecto en PyPI aquí: [https://pypi.org/project/nolimitai/](https://pypi.org/project/nolimitai/)
