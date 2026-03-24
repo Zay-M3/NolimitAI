@@ -122,4 +122,4 @@ The `set_config` method accepts the following parameters:
 
 This project is licensed under the Apache-2.0 License.
 
-[Documentación en español](./README_SPANIHS.md)
+[Documentación en español](./README_SPANISH.md)
