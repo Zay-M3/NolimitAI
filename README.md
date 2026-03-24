@@ -1,15 +1,16 @@
 # NoLimitAI
 
 <p align="center">
-  <img src="assets/nolimitai_logo.png" alt="NaturalSQL Logo" width="600"/>
+  <img src="assets/nolimitai_logo.png" alt="NolimitAI Logo" width="600"/>
 </p>
 
 <p align="center">
-  <a href="https://pypi.org/project/naturalsql/"><img src="https://img.shields.io/pypi/v/naturalsql?color=blue" alt="PyPI version"></a>
-  <a href="https://pypi.org/project/naturalsql/"><img src="https://img.shields.io/pypi/pyversions/naturalsql" alt="Python versions"></a>
-  <a href="https://pypi.org/project/naturalsql/"><img src="https://img.shields.io/pypi/dm/naturalsql" alt="Downloads"></a>
-  <a href="https://github.com/Zay-M3/NaturalSQL/blob/main/LICENSE"><img src="https://img.shields.io/pypi/l/naturalsql" alt="License"></a>
+  <a href="https://pypi.org/project/nolimitai/"><img src="https://img.shields.io/pypi/v/nolimitai?color=blue" alt="PyPI version"></a>
+  <a href="https://pypi.org/project/nolimitai/"><img src="https://img.shields.io/pypi/pyversions/nolimitai" alt="Python versions"></a>
+  <a href="https://pypi.org/project/nolimitai/"><img src="https://img.shields.io/pypi/dm/nolimitai" alt="Downloads"></a>
+  <a href="https://github.com/Zay-M3/nolimitai/blob/main/LICENSE"><img src="https://img.shields.io/pypi/l/nolimitai" alt="License"></a>
 </p>
+
 
 NoLimitAI is a Python library designated to route LLM requests across multiple providers (Groq, OpenRouter, Together AI, Gemini, Mistral) with built-in round-robin load balancing and automatic failover. It simplifies managing multiple AI services through a single, unified asynchronous API.
 
