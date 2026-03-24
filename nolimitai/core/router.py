@@ -13,6 +13,22 @@ class Router:
         self.services = self.config.get_available_services()
         self.round_robin = RoundRobin(self.services)
         self.agent_index = 0
+        self._last_used_service: Optional[str] = None
+        self._last_route_trace: List[str] = []
+
+    def get_last_used_service(self) -> Optional[str]:
+        """Returns the provider that successfully handled the latest request."""
+        return self._last_used_service
+
+    def get_last_route_trace(self) -> List[str]:
+        """Returns providers attempted in the latest route call, in order."""
+        return list(self._last_route_trace)
+
+    def get_next_service(self) -> Optional[str]:
+        """Returns the next provider that round robin would pick."""
+        if self.round_robin.is_empty:
+            return None
+        return self.round_robin.peek()
 
     def _messages_cache_key(self, session_id: str, user_id: Optional[str] = None) -> str:
         if user_id:
@@ -44,12 +60,17 @@ class Router:
         
         attempts = 0
         max_attempts = len(self.services)
+        self._last_route_trace = []
         
         cache_key = self._messages_cache_key(session_id=session_id, user_id=user_id)
         messages = list(self.get_session_messages(session_id=session_id, user_id=user_id))
-                
-        full_content = f"Context: {context}\n\nUser Question: {prompt}"
-        message = {"role": "user", "content": full_content}
+        
+        content_text = prompt if prompt else ""
+        
+        if context:     
+            content_text = f"Context: {context}\n\nUser Question: {prompt}"
+            
+        message = {"role": "user", "content": str(content_text)}
         
         if context:
             message["context"] = context
@@ -59,6 +80,7 @@ class Router:
         
         while(attempts < max_attempts):
             service = self.round_robin.next()
+            self._last_route_trace.append(service)
     
             if service not in self.services:
                 attempts += 1
@@ -81,6 +103,7 @@ class Router:
                 
                 async for chunk in adapter.chat(model=model, messages=messages):
                     started_streaming = True
+                    self._last_used_service = service
                     full_response += chunk
                     yield chunk  
                 messages.append({"role": "assistant", "content": full_response})

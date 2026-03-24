@@ -12,7 +12,7 @@ from __future__ import annotations
 
 from typing import Optional, Set
 
-_RETRYABLE_STATUS_CODES: Set[int] = {429, 503}
+_RETRYABLE_STATUS_CODES: Set[int] = {429, 503, 402,502}
 _AUTH_STATUS_CODES: Set[int] = {401, 403}
 
 

@@ -42,9 +42,8 @@ class MistralAIAdapter(BaseAdapter):
             temperature=effective_temperature,
             max_tokens=effective_max_tokens,
             top_p=effective_top_p,
-            reasoning_effort="high",
+            #reasoning_effort="high",
             stream=True,
-            stop=None,
         )
         
         async for chunk in response:
