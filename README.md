@@ -5,12 +5,11 @@
 </p>
 
 <p align="center">
-  <a href="https://pypi.org/project/nolimitai/"><img src="https://img.shields.io/pypi/v/nolimitai?color=blue" alt="PyPI version"></a>
-  <a href="https://pypi.org/project/nolimitai/"><img src="https://img.shields.io/pypi/pyversions/nolimitai" alt="Python versions"></a>
-  <a href="https://pypi.org/project/nolimitai/"><img src="https://img.shields.io/pypi/dm/nolimitai" alt="Downloads"></a>
-  <a href="https://github.com/Zay-M3/nolimitai/blob/main/LICENSE"><img src="https://img.shields.io/pypi/l/nolimitai" alt="License"></a>
+  <a href="https://pypi.org/project/nolimit-ai/"><img src="https://img.shields.io/pypi/v/nolimit-ai?color=blue" alt="PyPI version"></a>
+  <a href="https://pypi.org/project/nolimit-ai/"><img src="https://img.shields.io/pypi/pyversions/nolimit-ai" alt="Python versions"></a>
+  <a href="https://pypi.org/project/nolimit-ai/"><img src="https://img.shields.io/pypi/dm/nolimit-ai" alt="Downloads"></a>
+  <a href="https://github.com/Zay-M3/nolimit-ai/blob/main/LICENSE"><img src="https://img.shields.io/pypi/l/nolimit-ai" alt="License"></a>
 </p>
-
 
 NoLimitAI is a Python library designated to route LLM requests across multiple providers (Groq, OpenRouter, Together AI, Gemini, Mistral) with built-in round-robin load balancing and automatic failover. It simplifies managing multiple AI services through a single, unified asynchronous API.
 
@@ -26,7 +25,7 @@ NoLimitAI is a Python library designated to route LLM requests across multiple p
 Install the package from PyPI:
 
 ```bash
-pip install nolimitai
+pip install nolimit-ai
 ```
 
 You can view the project on PyPI here: [https://pypi.org/project/nolimitai/](https://pypi.org/project/nolimitai/)
