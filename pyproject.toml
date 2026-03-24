@@ -1,0 +1,55 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nolimit-ai"
+version = "0.1.0"
+description = "Multi-provider LLM router with async streaming and round-robin fallback."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "Apache-2.0"
+authors = [
+  { name = "NoLimitAI Maintainers" }
+]
+keywords = ["llm", "ai", "router", "streaming", "groq", "openrouter"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Software Development :: Libraries",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence"
+]
+dependencies = [
+  "openai>=1.40.0",
+  "groq>=0.9.0"
+]
+
+[project.optional-dependencies]
+dev = [
+  "build>=1.2.1",
+  "twine>=5.1.1",
+  "pytest>=8.2.0",
+  "pytest-asyncio>=0.23.7",
+  "ruff>=0.6.0"
+]
+
+[project.urls]
+Homepage = "https://pypi.org/project/nolimitai/"
+
+[tool.setuptools]
+include-package-data = true
+zip-safe = true
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["nolimitai*"]
+exclude = ["tests*", "docs*", "build*", "dist*", "venv*", "assets*", "examples*"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+python_files = "test_*.py"

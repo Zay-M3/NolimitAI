@@ -1,133 +1,124 @@
-## NolimitAI
+# NoLimitAI
 
-NolimitAI is a Python library that routes chat requests across multiple LLM providers using round robin, streams tokens in real time with async iterators, and keeps conversation history in memory cache per session.
+<p align="center">
+  <img src="assets/nolimitai_logo.png" alt="NaturalSQL Logo" width="600"/>
+</p>
 
-This document describes what is implemented and working in the repository right now.
+<p align="center">
+  <a href="https://pypi.org/project/naturalsql/"><img src="https://img.shields.io/pypi/v/naturalsql?color=blue" alt="PyPI version"></a>
+  <a href="https://pypi.org/project/naturalsql/"><img src="https://img.shields.io/pypi/pyversions/naturalsql" alt="Python versions"></a>
+  <a href="https://pypi.org/project/naturalsql/"><img src="https://img.shields.io/pypi/dm/naturalsql" alt="Downloads"></a>
+  <a href="https://github.com/Zay-M3/NaturalSQL/blob/main/LICENSE"><img src="https://img.shields.io/pypi/l/naturalsql" alt="License"></a>
+</p>
 
-[Spanish documentation](./README_SPANIHS.md)
+NoLimitAI is a Python library designated to route LLM requests across multiple providers (Groq, OpenRouter, Together AI, Gemini, Mistral) with built-in round-robin load balancing and automatic failover. It simplifies managing multiple AI services through a single, unified asynchronous API.
 
-Current architecture
---------------------
+## Features
+
+- **Multi-Provider Support**: Seamlessly switch between Groq, OpenRouter, Together AI, Google Gemini, and Mistral AI.
+- **Round-Robin & Fallback**: Automatically rotates through configured providers to distribute load and handles failures by retrying with the next available service.
+- **Async Streaming**: Native `async`/`await` support with streaming responses.
+- **Unified Interface**: Use one standard API for all providers.
+
+## Installation
+
+Install the package from PyPI:
 
 ```bash
-NoLimitAI/
-├── test.py                        # Interactive end-to-end script (manual usage, not pytest)
-├── nolimitai/
-│   ├── api.py                     # API wrapper with configured Router instance
-│   ├── nolimitai.py               # Main NolimitAI class with set_config() + chat() streaming
-│   ├── adapters/
-│   │   ├── base.py                # BaseAdapter contract (async streaming chat)
-│   │   ├── grop_adapter.py        # Groq streaming adapter
-│   │   ├── openrouter_adapter.py  # OpenRouter streaming adapter
-│   │   ├── adapters.py            # ADAPTERS_FACTORIES map service -> adapter constructor
-│   │   └── __init__.py
-│   ├── config/
-│   │   ├── config.py              # Config dataclass (keys + generation params)
-│   │   └── __init__.py
-│   ├── core/
-│   │   ├── round_robin.py         # Service rotation implementation
-│   │   ├── router.py              # Streaming routing + fallback + session context cache
-│   │   ├── errors.py              # Provider-agnostic status/error classification
-│   │   └── __init__.py
-│   └── memory/
-│       ├── base.py                # Memory backend contract
-│       ├── cache.py               # In-process TTL cache backend
-│       └── __init__.py
-└── README.md
+pip install nolimitai
 ```
 
-Streaming flow (async for + yield)
-----------------------------------
-1. User code iterates `async for token in nlai.chat(...)`.
-2. `NolimitAI.chat()` in `nolimitai/nolimitai.py` forwards the request to `Router.route()`.
-3. `Router.route()` selects a provider via `RoundRobin.next()`.
-4. Router creates the adapter from `ADAPTERS_FACTORIES`.
-5. Adapter `chat()` yields chunks/tokens as they arrive from provider streaming.
-6. Router forwards each chunk with `yield chunk`.
-7. Router also accumulates full assistant text and stores it in cache for session continuity.
+You can view the project on PyPI here: [https://pypi.org/project/nolimitai/](https://pypi.org/project/nolimitai/)
 
-Router behavior (current)
--------------------------
-- Keeps session messages in cache with key pattern:
-    - `session:{session_id}:messages`
-    - `user:{user_id}:session:{session_id}:messages`
-- Appends the user prompt once before provider attempts.
-- Retries up to the number of configured services.
-- Fallback policy:
-    - On retryable errors (`429`, `503`) or auth/permission errors (`401`, `403`), rotates to next provider.
-    - On non-retryable exceptions, raises immediately.
-- On success, appends assistant response to cached conversation history.
+## Usage
 
-Round robin behavior
---------------------
-- Implemented in `nolimitai/core/round_robin.py`.
-- Rotates over configured services in deterministic order.
-- Supports `next()`, `peek()`, `add()`, `remove()`, `reset()`, and `snapshot()`.
+Here is a complete example of how to configure and use NoLimitAI.
 
-Error handling module
----------------------
-- Implemented in `nolimitai/core/errors.py`.
-- Provides provider-agnostic helpers:
-    - `extract_status_code(exc)`
-    - `is_retryable(exc)`
-    - `is_auth_error(exc)`
-- Works with multiple SDK error shapes (`status_code`, `code`, `response.status_code`).
+### 1. Basic Setup
 
-Memory module
---------------------------------
-- Active backend: in-process cache (`nolimitai/memory/cache.py`).
-- Shared module-level dictionaries make context persistent across instances in the same Python process.
-- Supports TTL expiration, exists/delete/clear, and namespaced keys.
-- Redis support (Coming soon)
+You need to provide API keys for the services you want to use. The library does not automatically load environment variables; you must pass them explicitly.
 
-Adapters and base contract
---------------------------
-- `BaseAdapter` (`nolimitai/adapters/base.py`) defines a single streaming contract:
-    - `async def chat(...) -> AsyncIterator[str]`
-- Concrete adapters currently available:
-    - `GropAdapter` (Groq)
-    - `OpenRouterAdapter` (OpenRouter via OpenAI client with OpenRouter base URL)
-- Factory registry in `nolimitai/adapters/adapters.py` builds adapters from service name + options.
-
-Configuration module
---------------------
-- `Config` dataclass stores:
-    - API key vault (`_vault`)
-    - generation defaults (`temperature`, `max_tokens`, `top_p`)
-- `Config.set_config(...)` filters provided keys to supported services only.
-
-test.py (important)
--------------------
-- These will be implemented to test a production version.
-
-Quick usage
------------
 ```python
 import asyncio
+import os
 from nolimitai import NolimitAI
 
+# Optional: Load environment variables from a .env file
+# from dotenv import load_dotenv
+# load_dotenv()
+
 async def main():
-        app = NolimitAI()
-        app.set_config(
-                temperature=0.8,
-                max_tokens=1024,
-                top_p=0.9,
-                keys={
-                        "groq": "YOUR_GROQ_KEY",
-                        "openrouter": "YOUR_OPENROUTER_KEY",
-                },
-        )
+    # Initialize the client
+    nlai = NolimitAI()
 
-        async for token in app.chat(prompt="Hello", model="openai/gpt-oss-120b"):
-                print(token, end="", flush=True)
-        print()
+    # Configure the client with your API keys and optional parameters
+    # You only need to provide keys for the services you intend to use.
+    nlai.set_config(
+        temperature=0.7,
+        max_tokens=1024,
+        top_p=0.9,
+        keys={
+            "groq": os.getenv("GROQ_API_KEY"),
+            "openrouter": os.getenv("OPENROUTER_API_KEY"),
+            "gemini_ai": os.getenv("GEMINI_API_KEY"),
+            "mistral_ai": os.getenv("MISTRAL_API_KEY"),
+            "together_ai": os.getenv("TOGETHER_API_KEY"),
+        }
+    )
 
-asyncio.run(main())
+    prompt = "Explain the concept of round-robin scheduling in one sentence."
+
+    print(f"--- Asking: {prompt} ---\n")
+
+    # Check which service is next in line (optional)
+    next_service = nlai.get_next_service()
+    print(f"[Next Service]: {next_service}")
+
+    try:
+        # Stream the response
+        print("[Response]: ", end="", flush=True)
+        async for token in nlai.chat(prompt=prompt):
+            print(token, end="", flush=True)
+        print("\n")
+        
+        # Check which service actually handled the request
+        used_service = nlai.get_last_used_service()
+        print(f"[Used Service]: {used_service}")
+
+    except Exception as e:
+        print(f"\nAn error occurred: {e}")
+
+if __name__ == "__main__":
+    asyncio.run(main())
 ```
 
-Current notes
--------------
-- Real-time streaming is implemented end-to-end using async iterators.
-- Session context is currently backed by in-process cache only.
-- Redis and RAG are not implemented yet in this codebase.
+### 2. Configuration Options
 
+The `set_config` method accepts the following parameters:
+
+- `temperature` (float): Sampling temperature (0.0 to 1.0).
+- `max_tokens` (int): Maximum number of tokens to generate.
+- `top_p` (float): Nucleus sampling parameter.
+- `keys` (dict): A dictionary mapping provider names to API keys.
+
+**Supported Keys:**
+- `"groq"`
+- `"openrouter"`
+- `"together_ai"`
+- `"gemini_ai"`
+- `"mistral_ai"`
+
+## Important Notes
+
+- **Failover**: If a service fails to connect or authorize, the router will automatically try the next configured service in the list.
+
+## Troubleshooting
+
+- **`RuntimeError: NoLimitIA no ha sido configurado`**: This error occurs if you try to call `chat()` before calling `set_config()`. Ensure you configure the instance with at least one valid API key.
+- **Authentication Errors**: Ensure your API keys are correct. If a key is invalid, the router will treat it as a failure and attempt to switch to another provider if available.
+
+## License
+
+This project is licensed under the Apache-2.0 License.
+
+[Documentación en español](./README_SPANIHS.md)

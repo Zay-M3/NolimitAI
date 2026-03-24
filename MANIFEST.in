@@ -1,0 +1,21 @@
+include README.md
+include README_SPANISH.md
+include LICENSE
+include pyproject.toml
+recursive-include nolimitai *.py
+exclude test.py
+exclude .test.py
+recursive-exclude * test.py
+recursive-exclude * .test.py
+recursive-exclude * *_test.py
+recursive-exclude * tests.py
+recursive-exclude tests *
+global-exclude __pycache__
+global-exclude *.py[cod]
+global-exclude *.so
+global-exclude *.dylib
+global-exclude *.dll
+global-exclude *.egg-info
+global-exclude .DS_Store
+global-exclude .env
+global-exclude .env.*
