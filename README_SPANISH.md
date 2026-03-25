@@ -23,7 +23,7 @@ NoLimitAI es una librería de Python diseñada para enrutar solicitudes de LLM a
 </p>
 
 - **Paquete NPM:** [`nolimitai-typescript`](https://www.npmjs.com/package/nolimitai-typescript)
-- **Documentación:** [Ver Documentación TypeScript](./nolimitai-typescript)
+- **Documentación:** [Ver Documentación TypeScript](./nolimitai-typescript/README.md)
 
 ## Características
 

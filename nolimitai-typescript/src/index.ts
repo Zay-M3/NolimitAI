@@ -63,7 +63,7 @@ export class NolimitAI {
     userId?: string
   ): AsyncIterable<string> {
     if (!this.router) {
-      throw new Error('NoLimitIA is not configured. Please call setConfig() before using chat().');
+      throw new Error('NolimitIA is not configured. Please call setConfig() before using chat().');
     }
 
     const stream = this.router.route(prompt, model, context, sessionId, userId);

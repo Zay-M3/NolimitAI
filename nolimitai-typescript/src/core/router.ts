@@ -106,6 +106,12 @@ export class Router {
       };
 
       const apiKey = this.config.getKey(service);
+
+      if (!apiKey) {
+        attempts++;
+        continue;
+      }
+
       const adapter = factory(apiKey, options);
 
       let fullResponse = '';

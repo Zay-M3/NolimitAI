@@ -6,7 +6,7 @@
 
 This is a complete TypeScript port of the `nolimitai` Python package.
 
-check the full documentation [Documentation](https://github.com/Zay-M3/NolimitAI/blob/main/README.md)
+Check the full documentation [Documentation](https://github.com/Zay-M3/NolimitAI/blob/main/README.md)
 
 ## Installation
 
