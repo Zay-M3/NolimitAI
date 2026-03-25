@@ -13,6 +13,18 @@
 
 NoLimitAI es una librería de Python diseñada para enrutar solicitudes de LLM a través de múltiples proveedores (Groq, OpenRouter, Together AI, Gemini, Mistral) con balanceo de carga "round-robin" integrado y conmutación por error automática. Simplifica la gestión de múltiples servicios de IA a través de una única API asíncrona unificada.
 
+## Versión TypeScript
+
+¡La versión TypeScript de NoLimitAI ya está disponible!
+
+<p align="center">
+  <a href="https://www.npmjs.com/package/nolimitai-typescript"><img src="https://img.shields.io/npm/v/nolimitai-typescript?color=blue" alt="Versión NPM"></a>
+  <a href="https://www.npmjs.com/package/nolimitai-typescript"><img src="https://img.shields.io/npm/dm/nolimitai-typescript" alt="Descargas NPM"></a>
+</p>
+
+- **Paquete NPM:** [`nolimitai-typescript`](https://www.npmjs.com/package/nolimitai-typescript)
+- **Documentación:** [Ver Documentación TypeScript](./nolimitai-typescript/README.md)
+
 ## Características
 
 - **Soporte Multi-Proveedor**: Cambia sin problemas entre Groq, OpenRouter, Together AI, Google Gemini y Mistral AI.
